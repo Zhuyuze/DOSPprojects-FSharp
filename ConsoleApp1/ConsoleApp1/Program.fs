@@ -18,12 +18,6 @@ type InfoRecord =
     }
 
 
-type TestMessage =
-    | Mystring of string
-    | Myint of int
-    | Myinfo of InfoRecord
-
-
 type MyMessage =
     {
         ListOfActors: list<IActorRef>
@@ -76,22 +70,27 @@ let findSHAWithActorList (n:int) (s:string) (count:int) (l:List<Akka.Actor.IActo
         let record = {CurrentString=s; AllocatedLength=i; NumOfZeroes=n}
         let aindex = i % l.Length
         //printfn "Actor %d is working on length %d" aindex i
-        l.Item(aindex) <! Myinfo record
+        l.Item(aindex) <!  record
 
 
 let hashActor (mailbox: Actor<_>) =
     let rec loop() = actor {
         let! message = mailbox.Receive()
         let sender = mailbox.Sender()
-        match message with
-        | Myint x -> 
+        match box message with
+        | :? int as x -> 
             printfn "%A" x
-        | Mystring x -> 
+        | :? string as x -> 
             printfn "%A" x
-        | Myinfo c ->
+        | :? IActorRef as a ->
+            printfn "%s is activated" mailbox.Self.Path.Name
+            a <! true
+        | :? InfoRecord as c ->
             let s = mailbox.Self.Path.Name + " is working on task with allocated length: " + c.AllocatedLength.ToString()
             sender <! s
             findSHAinlength c.NumOfZeroes c.CurrentString c.AllocatedLength sender
+            sender <! true
+        | _ -> ()
             
         return! loop()
     }
@@ -146,19 +145,37 @@ let main argv =
     let server = 
         spawn system "server"
             (fun mailbox ->
+                //let mutable count = 0
+                let mutable totallength = 0
+                let mutable currentlength = 0
+                let mutable nOzs = 0
+                let mutable prefixString = ""
                 let rec loop() = actor {
                     let! message = mailbox.Receive()
                     let sender = mailbox.Sender()
+                    
     
                     match box message with
                     | :? string as message -> 
+                        //count <- count + 1
                         printfn "%s" message
+                    | :? bool as signal ->
+                        if signal && currentlength < totallength then
+                            currentlength <- currentlength + 1
+                            let record = {CurrentString=prefixString; AllocatedLength=currentlength; NumOfZeroes=nOzs}
+                            sender <!  record
+
                     | :? MyMessage as message ->
                         printfn "Mission start!"
+                        totallength <- message.MyInfoRecord.AllocatedLength
+                        nOzs <- message.MyInfoRecord.NumOfZeroes
+                        prefixString <- message.MyInfoRecord.CurrentString
+                        (*
                         for i in 0 .. message.MyInfoRecord.AllocatedLength do 
                             let k = i % message.ListOfActors.Length
                             let record = {CurrentString=message.MyInfoRecord.CurrentString; AllocatedLength=i; NumOfZeroes=message.MyInfoRecord.NumOfZeroes}
                             message.ListOfActors.Item(k) <! Myinfo record
+                        *)
                     | _ -> ()
     
                     return! loop()
@@ -175,8 +192,10 @@ let main argv =
 
     //use an actor as server to allocate tasks to actors in the list
     server <! newMessage
-
-
+    System.Console.ReadLine() |> ignore
+    for i in 0 .. (actorList.Length - 1) do
+        actorList.Item(i) <! server
+        System.Threading.Thread.Sleep(1000)
 
 
     //without actors
