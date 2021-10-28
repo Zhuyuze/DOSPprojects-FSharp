@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "chord", "chord.fsproj", "{B7CC3445-DBCE-419E-AB16-0C779A632ED4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7CC3445-DBCE-419E-AB16-0C779A632ED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7CC3445-DBCE-419E-AB16-0C779A632ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7CC3445-DBCE-419E-AB16-0C779A632ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7CC3445-DBCE-419E-AB16-0C779A632ED4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED3FB5AB-C596-4E37-BA30-F6BD4797A08A}
+	EndGlobalSection
+EndGlobal
