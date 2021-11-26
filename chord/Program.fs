@@ -74,9 +74,9 @@ let sha1 (s:string) =
 
 [<EntryPoint>]
 let main argv =
-    let mutable numNodes = 256
-    let mutable numRequests = 8
-    let mutable m = 10
+    let mutable numNodes = 32
+    let mutable numRequests = 10
+    let mutable m = 20
     if argv.Length > 0 then
         numNodes <- int argv.[0]
         numRequests <- int argv.[1]

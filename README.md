@@ -10,3 +10,5 @@ Example: "Yuze Zhu !+K` 00000B62288AB8B70D655B51E92B87257C144898C2C10632D62A9CBF
 ## Gossip makes simulations of message spread among nodes linked in 4 ways:
 
 Full connection, 3D grid connection, line connection, imperfect 3D connection.
+
+## chord makes simulations of a chord ring with finger tables
