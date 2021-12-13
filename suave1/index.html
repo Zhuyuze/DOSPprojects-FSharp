@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+
+<meta charset="utf-8" />
+
+<title>Twitter</title>
+<h1>TWITTER</h2>
+<p>
+  Functions:
+  <br>
+  0: register
+  <br>
+  1: send a tweet
+  <br>
+  2: send a retweet
+  <br>
+  3: subscribe a user
+  <br>
+  4: request new messages
+  <br>
+  5: request messages from subscription
+  <br>
+  6: request messages with a tag
+  <br>
+  7: request all messages of yourself
+  <br>
+  -1:quit
+</p>
+
+
+
+<label for="lname">Choose a function:</label><br>
+<input type="text" id="func" name="lname" value=""><br><br>
+<button type="button"
+  onclick="doSend(document.getElementById('func').value)">
+  SEND</button>
+<button type="button"
+  onclick="document.getElementById('demo').innerHTML = Date()">
+  Click me to display Date and Time.</button>
+
+<p id="demo"></p>
+
+
+
+<script language="javascript" type="text/javascript">
+
+  var wsUri = "ws://localhost:8080";
+  var output;
+  websocket = new WebSocket(wsUri);
+  
+  function init()
+  {
+    output = document.getElementById("output");
+    testWebSocket();
+  }
+
+  function testWebSocket()
+  {
+    //websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+  }
+
+  function onOpen(evt)
+  {
+    writeToScreen("CONNECTED");
+    //doSend("WebSocket rocks");
+  }
+
+  function onClose(evt)
+  {
+    writeToScreen("DISCONNECTED");
+    websocket.close();
+  }
+
+  function onMessage(evt)
+  {
+    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+    //websocket.close();
+  }
+
+  function onError(evt)
+  {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+  }
+
+  function doSend(message)
+  {
+    writeToScreen("SENT: " + message); 
+    
+    if (message == "-1") {
+      websocket.close();
+      onClose();
+      
+    } else {
+      websocket.send(message);
+    }
+  }
+
+  function writeToScreen(message)
+  {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+  }
+
+  window.addEventListener("load", init, false);
+
+</script>
+
+<h2>Response from server</h2>
+
+<div id="output"></div>

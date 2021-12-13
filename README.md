@@ -14,3 +14,5 @@ Full connection, 3D grid connection, line connection, imperfect 3D connection.
 ## chord makes simulations of a chord ring with finger tables
 
 ## tweeterClient and tweeterServer have tweeter functions in F#
+
+## suave1 is a web app using suave to implement twitter, and should work with tweeterServer as server
