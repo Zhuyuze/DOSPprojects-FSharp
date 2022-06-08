@@ -17,4 +17,4 @@ Full connection, 3D grid connection, line connection, imperfect 3D connection.
 
 ## Suave1 is a web app using suave to implement twitter, and should work with tweeterServer as server
 
-The demo video of twitter engine is [HERE](https://youtu.be/WYAwl7VXn-c)
+The demo video of twitter engine is [HERE (on Youtube)](https://youtu.be/WYAwl7VXn-c)
